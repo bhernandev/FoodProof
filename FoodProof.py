@@ -68,7 +68,7 @@ def findPictureURLs():
         businessURL = businessURL.replace("/biz/", "/biz_photos/")
         businessName = yelpResponse['businesses'][i]['name']
 
-        httpResp = requests.get(businessURL).text
+        httpResp = requests.get(businessURL + "&tab=food").text
         soup = BeautifulSoup(httpResp, "html.parser")
 
         imageURLs = []
@@ -76,7 +76,9 @@ def findPictureURLs():
         for item in soup.find_all(attrs={"data-photo-id": True}, limit=5):
             imageURLs.append("https://s3-media4.fl.yelpcdn.com/bphoto/" + item['data-photo-id'] + "/o.jpg")
 
-        retResponse['businesses'].append({'images': imageURLs, 'name': businessName,})
+        businessURL = businessURL.replace("/biz_photos/", "/biz/")
+
+        retResponse['businesses'].append({'images': imageURLs, 'name': businessName, 'busURL': businessURL })
 
     return json.dumps(retResponse)
 
