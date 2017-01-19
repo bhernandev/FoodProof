@@ -49,15 +49,12 @@ def request_yelp(url, url_params=None):
 
 @app.route("/", methods=['GET', 'POST'])
 def findPictureURLs():
-    lat = request.args.get('lat')
-    lon = request.args.get('lon')
-
-    llLatLon = lat + "," + lon
+    loc = request.args.get('location')
 
     searchParams = {
         'term': 'food',
         'limit': 5,
-        'll': llLatLon
+        'location': loc
     }
 
     yelpResponse = request_yelp("http://api.yelp.com/v2/search", searchParams)
